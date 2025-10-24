@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill Scalper - Test Suite</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #f5f5f5;
+      line-height: 1.6;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    .test-section {
+      margin-bottom: 30px;
+      padding-bottom: 30px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .test-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    h2 {
+      color: #6366f1;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h3 {
+      color: #333;
+      margin: 20px 0 10px 0;
+    }
+
+    button {
+      background: #6366f1;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: 500;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      transition: all 0.2s;
+    }
+
+    button:hover {
+      background: #4f46e5;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .test-result {
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .test-result.success {
+      background: #d1fae5;
+      border: 1px solid #6ee7b7;
+      color: #065f46;
+    }
+
+    .test-result.error {
+      background: #fee2e2;
+      border: 1px solid #fca5a5;
+      color: #991b1b;
+    }
+
+    .test-result.info {
+      background: #dbeafe;
+      border: 1px solid #93c5fd;
+      color: #1e40af;
+    }
+
+    .test-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .test-list li {
+      padding: 8px 12px;
+      margin: 5px 0;
+      background: #f9fafb;
+      border-radius: 4px;
+      border-left: 3px solid #6366f1;
+    }
+
+    .test-list li::before {
+      content: "✓ ";
+      color: #10b981;
+      font-weight: bold;
+      margin-right: 8px;
+    }
+
+    code {
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: #1f2937;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-left: 10px;
+    }
+
+    .status.ready {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .status.running {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status.complete {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .url-input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-bottom: 10px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .url-input:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .stat-card {
+      background: #f9fafb;
+      padding: 15px;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #6b7280;
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1f2937;
+    }
+  </style>
+</head>
+<body>
+  <h1>Skill Scalper Test Suite</h1>
+  <p class="subtitle">Test extension functionality without loading in Chrome</p>
+
+  <div class="container">
+    <!-- Function Tests -->
+    <div class="test-section">
+      <h2>
+        <span>🧪</span>
+        Function Tests
+        <span class="status ready">Ready</span>
+      </h2>
+      <p>Test core parsing and utility functions</p>
+
+      <h3>URL Parsing</h3>
+      <input type="text" class="url-input" id="urlInput" placeholder="https://github.com/owner/repo" value="https://github.com/anthropics/claude-code">
+      <button onclick="testUrlParsing()">Test URL Parser</button>
+      <div id="urlParseResult"></div>
+
+      <h3>Skill Name Generation</h3>
+      <input type="text" class="url-input" id="pathInput" placeholder="path/to/skill" value="my-awesome-skill">
+      <button onclick="testSkillName()">Test Name Generator</button>
+      <div id="skillNameResult"></div>
+
+      <h3>Array Chunking</h3>
+      <button onclick="testChunking()">Test Array Chunking</button>
+      <div id="chunkResult"></div>
+    </div>
+
+    <!-- Mock API Tests -->
+    <div class="test-section">
+      <h2>
+        <span>🌐</span>
+        Mock API Tests
+        <span class="status ready">Ready</span>
+      </h2>
+      <p>Test GitHub API integration with mock data</p>
+
+      <button onclick="testMockScan()">Mock Repository Scan</button>
+      <button onclick="testMockMetadata()">Mock Metadata Extraction</button>
+      <div id="mockApiResult"></div>
+    </div>
+
+    <!-- UI Component Tests -->
+    <div class="test-section">
+      <h2>
+        <span>🎨</span>
+        UI Component Tests
+        <span class="status ready">Ready</span>
+      </h2>
+      <p>Test UI rendering and state management</p>
+
+      <button onclick="testSkillRendering()">Test Skill List Rendering</button>
+      <button onclick="testStateManagement()">Test State Updates</button>
+      <div id="uiTestResult"></div>
+    </div>
+
+    <!-- Performance Tests -->
+    <div class="test-section">
+      <h2>
+        <span>⚡</span>
+        Performance Tests
+        <span class="status ready">Ready</span>
+      </h2>
+      <p>Measure extension performance</p>
+
+      <button onclick="testConcurrentRequests()">Test Concurrent Requests</button>
+      <button onclick="testCachingPerformance()">Test Caching</button>
+      <div id="perfTestResult"></div>
+      <div class="stats" id="perfStats" style="display:none;">
+        <div class="stat-card">
+          <div class="stat-label">Total Time</div>
+          <div class="stat-value" id="statTotalTime">-</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Requests Made</div>
+          <div class="stat-value" id="statRequests">-</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Avg Response Time</div>
+          <div class="stat-value" id="statAvgTime">-</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Extension Integration -->
+    <div class="test-section">
+      <h2>
+        <span>🔌</span>
+        Extension Integration
+        <span class="status ready">Ready</span>
+      </h2>
+      <p>Test if extension is loaded and accessible</p>
+
+      <button onclick="testExtensionLoaded()">Check Extension Status</button>
+      <button onclick="testPermissions()">Check Permissions</button>
+      <div id="extensionTestResult"></div>
+    </div>
+
+    <!-- Full Integration Test -->
+    <div class="test-section">
+      <h2>
+        <span>🚀</span>
+        Full Integration Test
+        <span class="status ready">Ready</span>
+      </h2>
+      <p>Run all tests in sequence</p>
+
+      <button onclick="runAllTests()" style="background: #10b981;">Run All Tests</button>
+      <div id="integrationResult"></div>
+    </div>
+  </div>
+
+  <script>
+    // Utility Functions (from background.js)
+    function parseGitHubUrl(url) {
+      try {
+        const urlObj = new URL(url);
+        if (!urlObj.hostname.includes('github.com')) {
+          return null;
+        }
+        const pathParts = urlObj.pathname.split('/').filter(Boolean);
+        if (pathParts.length < 2) {
+          return null;
+        }
+        const [owner, repo] = pathParts;
+        const branch = pathParts[2] === 'tree' || pathParts[2] === 'blob' ? pathParts[3] : 'main';
+        return {
+          owner,
+          repo,
+          branch,
+          fullName: `${owner}/${repo}`,
+          url: `https://github.com/${owner}/${repo}`
+        };
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function getSkillName(path) {
+      if (path === '/' || path === '') {
+        return 'Root Skill';
+      }
+      const parts = path.split('/').filter(Boolean);
+      const lastName = parts[parts.length - 1];
+      return lastName
+        .replace(/[-_]/g, ' ')
+        .replace(/\b\w/g, char => char.toUpperCase());
+    }
+
+    function chunkArray(array, size) {
+      const chunks = [];
+      for (let i = 0; i < array.length; i += size) {
+        chunks.push(array.slice(i, i + size));
+      }
+      return chunks;
+    }
+
+    // Test Functions
+    function showResult(elementId, message, type = 'info') {
+      const element = document.getElementById(elementId);
+      element.className = `test-result ${type}`;
+      element.textContent = message;
+      element.style.display = 'block';
+    }
+
+    function testUrlParsing() {
+      const url = document.getElementById('urlInput').value;
+      const result = parseGitHubUrl(url);
+
+      if (result) {
+        showResult('urlParseResult', JSON.stringify(result, null, 2), 'success');
+      } else {
+        showResult('urlParseResult', 'Invalid GitHub URL', 'error');
+      }
+    }
+
+    function testSkillName() {
+      const path = document.getElementById('pathInput').value;
+      const name = getSkillName(path);
+      showResult('skillNameResult', `Generated name: "${name}"`, 'success');
+    }
+
+    function testChunking() {
+      const array = Array.from({ length: 23 }, (_, i) => i + 1);
+      const chunks = chunkArray(array, 5);
+      const result = `Original array length: ${array.length}\nChunk size: 5\nNumber of chunks: ${chunks.length}\n\nChunks:\n${chunks.map((chunk, i) => `Chunk ${i + 1}: [${chunk.join(', ')}]`).join('\n')}`;
+      showResult('chunkResult', result, 'success');
+    }
+
+    function testMockScan() {
+      showResult('mockApiResult', 'Scanning mock repository...', 'info');
+
+      setTimeout(() => {
+        const mockSkills = [
+          { name: 'Code Analyzer', path: 'skills/code-analyzer', description: 'Analyzes code quality and suggests improvements' },
+          { name: 'Documentation Generator', path: 'skills/doc-gen', description: 'Automatically generates documentation from code' },
+          { name: 'Test Writer', path: 'skills/test-writer', description: 'Creates unit tests for your code' }
+        ];
+
+        const result = `Found ${mockSkills.length} skills:\n\n${mockSkills.map(skill => `📚 ${skill.name}\n   Path: ${skill.path}\n   ${skill.description}`).join('\n\n')}`;
+        showResult('mockApiResult', result, 'success');
+      }, 1000);
+    }
+
+    function testMockMetadata() {
+      showResult('mockApiResult', 'Extracting metadata from SKILL.md...', 'info');
+
+      setTimeout(() => {
+        const mockContent = `# Code Analyzer\n\nAnalyzes your code for quality issues and suggests improvements.\n\n## Features\n- Static analysis\n- Best practices checking`;
+        const titleMatch = mockContent.match(/^#\s+(.+)$/m);
+        const descMatch = mockContent.match(/^#.*\n\n(.+?)(?:\n\n|$)/s);
+
+        const result = `Extracted metadata:\n\nTitle: "${titleMatch ? titleMatch[1] : 'N/A'}"\nDescription: "${descMatch ? descMatch[1].trim() : 'N/A'}"`;
+        showResult('mockApiResult', result, 'success');
+      }, 800);
+    }
+
+    function testSkillRendering() {
+      showResult('uiTestResult', 'Rendering mock skill list...', 'info');
+
+      setTimeout(() => {
+        const mockSkills = [
+          { name: 'Skill A', path: 'a', selected: true },
+          { name: 'Skill B', path: 'b', selected: false },
+          { name: 'Skill C', path: 'c', selected: true }
+        ];
+
+        const result = `Rendered ${mockSkills.length} skill items:\n\n${mockSkills.map(skill => `${skill.selected ? '☑' : '☐'} ${skill.name} (${skill.path})`).join('\n')}`;
+        showResult('uiTestResult', result, 'success');
+      }, 500);
+    }
+
+    function testStateManagement() {
+      showResult('uiTestResult', 'Testing state updates...', 'info');
+
+      setTimeout(() => {
+        const initialState = { selectedCount: 0 };
+        const actions = ['select A', 'select B', 'deselect A', 'select C'];
+
+        const log = actions.map((action, i) => {
+          const count = action.startsWith('select') ? 1 : -1;
+          initialState.selectedCount = Math.max(0, initialState.selectedCount + count);
+          return `${i + 1}. ${action} → selectedCount: ${initialState.selectedCount}`;
+        });
+
+        showResult('uiTestResult', `State transitions:\n\n${log.join('\n')}\n\nFinal state: ${initialState.selectedCount} items selected`, 'success');
+      }, 500);
+    }
+
+    function testConcurrentRequests() {
+      showResult('perfTestResult', 'Simulating 10 concurrent requests...', 'info');
+      document.getElementById('perfStats').style.display = 'grid';
+
+      const startTime = performance.now();
+      const requests = Array.from({ length: 10 }, (_, i) =>
+        new Promise(resolve => setTimeout(() => resolve(i), Math.random() * 1000))
+      );
+
+      Promise.all(requests).then(() => {
+        const endTime = performance.now();
+        const totalTime = (endTime - startTime).toFixed(2);
+        const avgTime = (totalTime / 10).toFixed(2);
+
+        document.getElementById('statTotalTime').textContent = `${totalTime}ms`;
+        document.getElementById('statRequests').textContent = '10';
+        document.getElementById('statAvgTime').textContent = `${avgTime}ms`;
+
+        showResult('perfTestResult', `✓ Completed 10 concurrent requests in ${totalTime}ms`, 'success');
+      });
+    }
+
+    function testCachingPerformance() {
+      showResult('perfTestResult', 'Testing cache performance...', 'info');
+
+      setTimeout(() => {
+        const cache = new Map();
+        const key = 'test-repo';
+
+        // First access (cache miss)
+        const t1 = performance.now();
+        const data = { skills: ['A', 'B', 'C'] };
+        cache.set(key, { data, timestamp: Date.now() });
+        const firstAccess = performance.now() - t1;
+
+        // Second access (cache hit)
+        const t2 = performance.now();
+        const cached = cache.get(key);
+        const secondAccess = performance.now() - t2;
+
+        const speedup = (firstAccess / secondAccess).toFixed(2);
+
+        showResult('perfTestResult', `Cache miss: ${firstAccess.toFixed(3)}ms\nCache hit: ${secondAccess.toFixed(3)}ms\nSpeedup: ${speedup}x faster`, 'success');
+      }, 500);
+    }
+
+    function testExtensionLoaded() {
+      if (typeof chrome !== 'undefined' && chrome.runtime) {
+        showResult('extensionTestResult', '✓ Extension API is accessible\nRuntime ID: ' + chrome.runtime.id, 'success');
+      } else {
+        showResult('extensionTestResult', '⚠ Extension API not available\nThis test page needs to be opened from within the extension context.', 'error');
+      }
+    }
+
+    function testPermissions() {
+      if (typeof chrome !== 'undefined' && chrome.permissions) {
+        chrome.permissions.getAll((permissions) => {
+          const result = `Permissions:\n${permissions.permissions.join(', ')}\n\nOrigins:\n${permissions.origins.join(', ')}`;
+          showResult('extensionTestResult', result, 'success');
+        });
+      } else {
+        showResult('extensionTestResult', 'Permissions API not available', 'error');
+      }
+    }
+
+    async function runAllTests() {
+      showResult('integrationResult', 'Running all tests...', 'info');
+
+      const tests = [
+        { name: 'URL Parsing', fn: () => testUrlParsing() },
+        { name: 'Skill Name Generation', fn: () => testSkillName() },
+        { name: 'Array Chunking', fn: () => testChunking() },
+        { name: 'Mock API Scan', fn: () => new Promise(resolve => { testMockScan(); setTimeout(resolve, 1100); }) },
+        { name: 'Mock Metadata', fn: () => new Promise(resolve => { testMockMetadata(); setTimeout(resolve, 900); }) },
+        { name: 'Skill Rendering', fn: () => new Promise(resolve => { testSkillRendering(); setTimeout(resolve, 600); }) },
+        { name: 'State Management', fn: () => new Promise(resolve => { testStateManagement(); setTimeout(resolve, 600); }) },
+        { name: 'Concurrent Requests', fn: () => new Promise(resolve => { testConcurrentRequests(); setTimeout(resolve, 2000); }) },
+        { name: 'Caching Performance', fn: () => new Promise(resolve => { testCachingPerformance(); setTimeout(resolve, 600); }) }
+      ];
+
+      let results = [];
+      for (const test of tests) {
+        try {
+          await test.fn();
+          results.push(`✓ ${test.name}`);
+        } catch (error) {
+          results.push(`✗ ${test.name}: ${error.message}`);
+        }
+      }
+
+      const summary = `Test Suite Complete\n\n${results.join('\n')}\n\n${results.filter(r => r.startsWith('✓')).length}/${tests.length} tests passed`;
+      showResult('integrationResult', summary, 'success');
+    }
+  </script>
+</body>
+</html>

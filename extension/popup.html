@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill Scalper</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1 class="title">
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        </svg>
+        Skill Scalper
+      </h1>
+      <p class="subtitle">Discover Claude skills from GitHub</p>
+    </header>
+
+    <!-- Current Repository Info -->
+    <div class="repo-info" id="repoInfo">
+      <div class="repo-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+          <path fill-rule="evenodd" d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"/>
+        </svg>
+      </div>
+      <div class="repo-details">
+        <div class="repo-name" id="repoName">Not on a GitHub repository</div>
+        <div class="repo-url" id="repoUrl"></div>
+      </div>
+    </div>
+
+    <!-- Scan Section -->
+    <div class="scan-section">
+      <button class="btn btn-primary" id="scanBtn">
+        <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+          <path fill-rule="evenodd" d="M1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0zM8 0a8 8 0 100 16A8 8 0 008 0zm.75 4.75a.75.75 0 00-1.5 0v2.5h-2.5a.75.75 0 000 1.5h2.5v2.5a.75.75 0 001.5 0v-2.5h2.5a.75.75 0 000-1.5h-2.5v-2.5z"/>
+        </svg>
+        Scan for Skills
+      </button>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div class="loading-section" id="loadingSection" style="display: none;">
+      <div class="spinner"></div>
+      <p class="loading-text" id="loadingText">Scanning repository...</p>
+    </div>
+
+    <!-- Skills List -->
+    <div class="skills-section" id="skillsSection" style="display: none;">
+      <div class="skills-header">
+        <h2 class="skills-title">
+          Discovered Skills
+          <span class="skill-count" id="skillCount">0</span>
+        </h2>
+        <button class="btn-text" id="selectAllBtn">Select All</button>
+      </div>
+
+      <div class="skills-list" id="skillsList">
+        <!-- Skills will be dynamically inserted here -->
+      </div>
+
+      <div class="install-section">
+        <button class="btn btn-success" id="installBtn">
+          <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8.75 1.75a.75.75 0 00-1.5 0v6.69L5.03 6.22a.75.75 0 00-1.06 1.06l3.5 3.5a.75.75 0 001.06 0l3.5-3.5a.75.75 0 00-1.06-1.06L8.75 8.44V1.75z"/>
+            <path d="M3.5 9.75a.75.75 0 00-1.5 0v1.5A2.75 2.75 0 004.75 14h6.5A2.75 2.75 0 0014 11.25v-1.5a.75.75 0 00-1.5 0v1.5c0 .69-.56 1.25-1.25 1.25h-6.5c-.69 0-1.25-.56-1.25-1.25v-1.5z"/>
+          </svg>
+          Install Selected Skills
+        </button>
+      </div>
+    </div>
+
+    <!-- Status Messages -->
+    <div class="status-section" id="statusSection" style="display: none;">
+      <div class="status-message" id="statusMessage"></div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="emptyState" style="display: none;">
+      <svg class="empty-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <circle cx="12" cy="12" r="10" stroke-width="2"/>
+        <path d="M12 16v-4m0-4h.01" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <p class="empty-text">No skills found in this repository</p>
+      <p class="empty-hint">Skills should be defined in SKILL.md files</p>
+    </div>
+
+    <!-- Installation Instructions -->
+    <div class="instructions" id="instructions" style="display: none;">
+      <h3 class="instructions-title">Installation Instructions</h3>
+      <ol class="instructions-list">
+        <li>Skills will be downloaded as ZIP files to your Downloads folder</li>
+        <li>Extract each ZIP file</li>
+        <li>Move the extracted folder to <code>~/.claude/skills/</code></li>
+        <li>Restart Claude to load the new skills</li>
+      </ol>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <a href="https://github.com/delorenj/skill-scalper" target="_blank" class="footer-link">
+        View on GitHub
+      </a>
+    </footer>
+  </div>
+
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# This file ensures the icons directory is tracked by git
+# Place your icon files here:
+# - icon16.png
+# - icon32.png
+# - icon48.png
+# - icon128.png
+
+# You can generate placeholder icons using generate-icons.html
